@@ -37,6 +37,19 @@ app.get("/barrier/member/:member", (req,res)=>{
     );
 });
 
+app.get("/barrier/member", (req,res)=>{
+    db.all(
+        `SELECT bm.id, b.name AS barrier, bm.member, bm.deal_id
+         FROM barrier_members bm
+         JOIN barrier b ON b.id = bm.barrier_id`,
+         [],
+         (err,rows)=>{
+            if(err) return res.status(500).json({error:err.message});
+            res.json(rows);
+         }
+    );
+});
+
 app.post("/barrier/member/add",(req,res)=>{
     const {barrier_id, member, deal_id} = req.body;
     db.run(
