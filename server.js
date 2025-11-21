@@ -61,6 +61,20 @@ app.get("/employees", async (req, res) => {
 // ---------------------------
 // Deals
 // ---------------------------
+/**
+ * @openapi
+ * /deals:
+ *   get:
+ *     summary: Get all deals
+ *     tags: [Deals]
+ *     responses:
+ *       200:
+ *         description: List of all deals
+ */
+app.get("/deals", async (req, res) => {
+  const deals = await pool.query("SELECT * FROM deal");
+  res.json(deals.rows);
+});
 
 /**
  * @openapi
@@ -175,6 +189,20 @@ app.post("/deal/:code/member", async (req, res) => {
 // ---------------------------
 // Barriers
 // ---------------------------
+/**
+ * @openapi
+ * /barriers:
+ *   get:
+ *     summary: Get all barriers
+ *     tags: [Barriers]
+ *     responses:
+ *       200:
+ *         description: List of all barriers
+ */
+app.get("/barriers", async (req, res) => {
+  const barriers = await pool.query("SELECT * FROM barrier");
+  res.json(barriers.rows);
+});
 
 /**
  * @openapi
