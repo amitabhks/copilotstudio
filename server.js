@@ -1,12 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import pkg from 'pg';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
-import dotenv from 'dotenv';
-dotenv.config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const { Pool } = require("pg");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
 
-const { Pool } = pkg;
 const app = express();
 app.use(bodyParser.json());
 
