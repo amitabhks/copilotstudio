@@ -18,7 +18,7 @@ const swaggerOptions = {
     info: { title: "IB & Deal API", version: "1.0.0" },
     servers: [{ url: process.env.SWAGGER_SERVER_URL }]
   },
-  apis: ["./server.js"]
+  apis: ["server.js"]
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
