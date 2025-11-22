@@ -20,8 +20,11 @@ CREATE TABLE barrier (
 CREATE TABLE barrier_members (
   barrier_code TEXT REFERENCES barrier(code),
   member_code TEXT REFERENCES employee(code),
+  status TEXT,
+  on_date DATE,
+  off_date DATE,
   deal_id TEXT,
-  PRIMARY KEY (barrier_code, member_code)
+  PRIMARY KEY(barrier_code, member_code)
 );
 
 CREATE TABLE deal (
@@ -34,5 +37,5 @@ CREATE TABLE deal_members (
   deal_code TEXT REFERENCES deal(code),
   member_code TEXT REFERENCES employee(code),
   role TEXT,
-  PRIMARY KEY (deal_code, member_code)
+  PRIMARY KEY(deal_code, member_code)
 );
