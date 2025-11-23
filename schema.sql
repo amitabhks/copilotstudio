@@ -23,7 +23,7 @@ CREATE TABLE barrier_members (
   status TEXT,
   on_date DATE,
   off_date DATE,
-  deal_id TEXT,
+  deal_code TEXT,
   PRIMARY KEY(barrier_code, member_code)
 );
 

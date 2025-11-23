@@ -31,7 +31,7 @@ INSERT INTO barrier (code, name, approver_code) VALUES
 -- BARRIER MEMBERS
 -------------------------------------------------------
 
-INSERT INTO barrier_members (barrier_code, member_code, status, on_date, off_date, deal_id) VALUES
+INSERT INTO barrier_members (barrier_code, member_code, status, on_date, off_date, deal_code) VALUES
 ('B001', 'E003', 'Behind the barrier', '2025-03-10', null, NULL),
 ('B001', 'E004', 'Above the barrier','2025-03-10', '2025-06-30', NULL),
 ('B002', 'E005', 'Crossed','2025-03-10', '2025-06-30', 'D001'),
