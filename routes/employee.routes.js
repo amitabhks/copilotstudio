@@ -35,38 +35,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-/**
- * @openapi
- * /employee/{code}:
- *   get:
- *     summary: Get an employee by code
- *     tags: [Employee]
- *     parameters:
- *       - in: path
- *         name: code
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Employee object with details
- *       404:
- *         description: Employee not found
- */
-router.get("/:code", async (req, res) => {
-  try {
-    const { code } = req.params;
-    const employee = await runQuery("SELECT * FROM employee WHERE code=$1", [
-      code,
-    ]);
-    if (employee.rowCount === 0)
-      return res.status(404).json({ error: "Employee not found" });
-    res.json(employee.rows);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send("Server error");
-  }
-});
 
 /**
  * @openapi
@@ -107,14 +75,16 @@ router.get("/search", async (req, res) => {
     const { email } = req.query;
 
     if (!email) {
-      return res.status(400).json({ error: "Email query parameter is required" });
+      return res
+        .status(400)
+        .json({ error: "Email query parameter is required" });
     }
 
     const result = await runQuery(
       "SELECT code, name, email FROM employee WHERE email = $1",
       [email]
     );
-
+  
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Employee not found" });
     }
@@ -123,6 +93,39 @@ router.get("/search", async (req, res) => {
   } catch (err) {
     console.error("Error searching employee:", err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @openapi
+ * /employee/{code}:
+ *   get:
+ *     summary: Get an employee by code
+ *     tags: [Employee]
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee object with details
+ *       404:
+ *         description: Employee not found
+ */
+router.get("/:code", async (req, res) => {
+  try {
+    const { code } = req.params;
+    const employee = await runQuery("SELECT * FROM employee WHERE code=$1", [
+      code,
+    ]);
+    if (employee.rowCount === 0)
+      return res.status(404).json({ error: "Employee not found" });
+    res.json(employee.rows);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Server error");
   }
 });
 

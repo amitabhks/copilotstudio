@@ -13,11 +13,11 @@ DELETE FROM employee;
 -------------------------------------------------------
 
 INSERT INTO employee (code, name, email) VALUES
-('E001', 'Amit', 'amit@ubs685.onmicrosoft.com'),
-('E002', 'cb', 'cb@ubs685.onmicrosoft.com'),
-('E003', 'ad', 'ad@ubs685.onmicrosoft.com'),
-('E004', 'dk', 'dk@ubs685.onmicrosoft.com'),
-('E005', 'js', 'js@ubs685.onmicrosoft.com');
+('E001', 'Amitabh', 'amitabhks@ubs685.onmicrosoft.com'),
+('E002', 'Caroline', 'carolinebeaman@ubs685.onmicrosoft.com'),
+('E003', 'Alan', 'alandewindt@ubs685.onmicrosoft.com'),
+('E004', 'Daniel', 'danielknaus@ubs685.onmicrosoft.com'),
+('E005', 'Jan', 'janszpara@ubs685.onmicrosoft.com');
 
 -------------------------------------------------------
 -- BARRIERS
