@@ -37,6 +37,39 @@ router.get("/", async (req, res) => {
 
 /**
  * @openapi
+ * /employee/{code}:
+ *   get:
+ *     summary: Get an employee by code
+ *     tags: [Employee]
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee object with details
+ *       404:
+ *         description: Employee not found
+ */
+router.get("/:code", async (req, res) => {
+  try {
+    const { code } = req.params;
+    const employee = await runQuery("SELECT * FROM employee WHERE code=$1", [
+      code,
+    ]);
+    if (employee.rowCount === 0)
+      return res.status(404).json({ error: "Employee not found" });
+    res.json(employee.rows);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Server error");
+  }
+});
+
+/**
+ * @openapi
  * /employee/search:
  *   get:
  *     summary: Search employee by email
