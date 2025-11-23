@@ -7,7 +7,7 @@ const router = express.Router();
  * /barrier:
  *   get:
  *     summary: Get all barriers
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     responses:
  *       200:
  *         description: List of barriers
@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
  * /barrier:
  *   post:
  *     summary: Create a new barrier
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     requestBody:
  *       required: true
  *       content:
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
  * /barrier/{code}:
  *   get:
  *     summary: Get a barrier by code
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     parameters:
  *       - in: path
  *         name: code
@@ -102,7 +102,7 @@ router.get("/:code", async (req, res) => {
  * /barrier/{code}:
  *   delete:
  *     summary: Delete a barrier
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     parameters:
  *       - in: path
  *         name: code
@@ -130,7 +130,7 @@ router.delete("/:code", async (req, res) => {
  * /barrier/{code}/member:
  *   post:
  *     summary: Add member to a barrier
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     parameters:
  *       - in: path
  *         name: code
@@ -143,11 +143,9 @@ router.delete("/:code", async (req, res) => {
  *         application/json:
  *           schema:
  *             type: object
- *             required: [member_code, role]
+ *             required: [member_code, on_date, status]
  *             properties:
  *               member_code:
- *                 type: string
- *               role:
  *                 type: string
  *               on_date:
  *                 type: string
@@ -166,11 +164,11 @@ router.delete("/:code", async (req, res) => {
 router.post("/:code/member", async (req, res) => {
   try {
     const { code } = req.params;
-    const { member_code, role, on_date, off_date, status, deal_code } =
+    const { member_code, on_date, off_date, status, deal_code } =
       req.body;
     await runQuery(
-      "INSERT INTO barrier_members(barrier_code, member_code, role, on_date, off_date, status, deal_code) VALUES($1,$2,$3,$4,$5,$6,$7)",
-      [code, member_code, role, on_date, off_date, status, deal_code]
+      "INSERT INTO barrier_members(barrier_code, member_code, on_date, off_date, status, deal_code) VALUES($1,$2,$3,$4,$5,$6)",
+      [code, member_code, on_date, off_date, status, deal_code]
     );
     res.status(201).json({ ok: true });
   } catch (e) {
@@ -184,7 +182,7 @@ router.post("/:code/member", async (req, res) => {
  * /barrier/status/{member_code}:
  *   get:
  *     summary: Get all barriers for a particular employee
- *     tags: [Barriers]
+ *     tags: [Barrier]
  *     parameters:
  *       - in: path
  *         name: member_code

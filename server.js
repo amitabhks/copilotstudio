@@ -28,7 +28,7 @@ const swaggerOptions = {
     info: {
       title: "Info Barrier & Deals API",
       version: "1.0.0",
-      description: "REST API for barriers, deals, employees"
+      description: "REST API for barrier, deal and employee"
     },
     servers: [
       { url: process.env.SWAGGER_SERVER_URL}
@@ -36,6 +36,7 @@ const swaggerOptions = {
   },
   apis: ["./server.js", "./routes/*.js"]
 };
+
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

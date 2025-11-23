@@ -4,18 +4,10 @@ const router = express.Router();
 
 /**
  * @openapi
- * tags:
- *   - name: Employees
- *   - name: Deals
- *   - name: Barriers
- */
-
-/**
- * @openapi
  * /employee:
  *   get:
  *     summary: Get all employees
- *     tags: [Employees]
+ *     tags: [Employee]
  *     responses:
  *       200:
  *         description: List of employees
@@ -40,6 +32,64 @@ router.get("/", async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).send("Server error");
+  }
+});
+
+/**
+ * @openapi
+ * /employee/search:
+ *   get:
+ *     summary: Search employee by email
+ *     description: Returns employee details for the given email.
+ *     tags:
+ *       - Employee
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Full email of the employee
+ *     responses:
+ *       200:
+ *         description: Employee found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       404:
+ *         description: No employee found
+ *       500:
+ *         description: Database error
+ */
+router.get("/search", async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email query parameter is required" });
+    }
+
+    const result = await runQuery(
+      "SELECT code, name, email FROM employee WHERE email = $1",
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Error searching employee:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
