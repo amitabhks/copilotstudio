@@ -81,7 +81,7 @@ router.get("/search", async (req, res) => {
     }
 
     const result = await runQuery(
-      "SELECT code, name, email FROM employee WHERE email = $1",
+      "SELECT code, name, email FROM employee WHERE LOWER(email) = LOWER($1)",
       [email]
     );
   
