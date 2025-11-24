@@ -7,6 +7,7 @@ const router = express.Router();
  * /deal:
  *   get:
  *     summary: Get all deals
+ *     description: Get all existing deals
  *     tags: [Deal]
  *     responses:
  *       200:
@@ -27,6 +28,7 @@ router.get("/", async (req, res) => {
  * /deal:
  *   post:
  *     summary: Create a new deal
+ *     description: Create a new deal with the supplied information
  *     tags: [Deal]
  *     requestBody:
  *       required: true
@@ -65,6 +67,7 @@ router.post("/", async (req, res) => {
  * /deal/{code}:
  *   get:
  *     summary: Get a deal by code
+ *     description: Get details of a deal by its code
  *     tags: [Deal]
  *     parameters:
  *       - in: path
@@ -100,6 +103,7 @@ router.get("/:code", async (req, res) => {
  * /deal/{code}:
  *   delete:
  *     summary: Delete a deal
+ *     description: Delete an existing deal
  *     tags: [Deal]
  *     parameters:
  *       - in: path
@@ -128,6 +132,7 @@ router.delete("/:code", async (req, res) => {
  * /deal/{code}/member:
  *   post:
  *     summary: Add a member to a deal
+ *     description: Add the employee as a member of the requested deal with the role provided
  *     tags: [Deal]
  *     parameters:
  *       - in: path

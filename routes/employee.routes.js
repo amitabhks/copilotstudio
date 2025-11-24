@@ -7,6 +7,7 @@ const router = express.Router();
  * /employee:
  *   get:
  *     summary: Get all employees
+ *     description: Get the list of all employees
  *     tags: [Employee]
  *     responses:
  *       200:
@@ -153,6 +154,7 @@ router.get("/search", async (req, res) => {
  * /employee/{code}:
  *   get:
  *     summary: Get an employee by code
+ *     description: Get details of the employee with the provided code
  *     tags: [Employee]
  *     parameters:
  *       - in: path

@@ -7,6 +7,7 @@ const router = express.Router();
  * /barrier:
  *   get:
  *     summary: Get all barriers
+ *     description: Get all existing barriers
  *     tags: [Barrier]
  *     responses:
  *       200:
@@ -27,6 +28,7 @@ router.get("/", async (req, res) => {
  * /barrier:
  *   post:
  *     summary: Create a new barrier
+ *     description: Create a new information barrier
  *     tags: [Barrier]
  *     requestBody:
  *       required: true
@@ -155,6 +157,7 @@ router.get("/search", async (req, res) => {
  * /barrier/{code}:
  *   get:
  *     summary: Get a barrier by code
+ *     description: Get a particular barrier by its code
  *     tags: [Barrier]
  *     parameters:
  *       - in: path
@@ -192,6 +195,7 @@ router.get("/:code", async (req, res) => {
  * /barrier/{code}:
  *   delete:
  *     summary: Delete a barrier
+ *     description: Delete a particular barrier with its code
  *     tags: [Barrier]
  *     parameters:
  *       - in: path
@@ -220,6 +224,7 @@ router.delete("/:code", async (req, res) => {
  * /barrier/{code}/member:
  *   post:
  *     summary: Add member to a barrier
+ *     description: Add the employee with membership details to the barrier
  *     tags: [Barrier]
  *     parameters:
  *       - in: path
@@ -272,6 +277,7 @@ router.post("/:code/member", async (req, res) => {
  * /barrier/status/{member_code}:
  *   get:
  *     summary: Get all barriers for a particular employee
+ *     description: Get all barriers for the provided employee code
  *     tags: [Barrier]
  *     parameters:
  *       - in: path
