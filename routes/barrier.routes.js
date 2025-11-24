@@ -67,7 +67,7 @@ router.post("/", async (req, res) => {
  *     summary: Search barriers by name
  *     description: >
  *       Search for barriers using a partial, case-insensitive name match.
- *       For example, searching with `chi` will match `Chinese Wall` or `China Desk Barrier`.
+ *       For example, searching with `perm` will match `Permanent Barrier`
  *     tags:
  *       - Barrier
  *     parameters:
@@ -89,13 +89,13 @@ router.post("/", async (req, res) => {
  *                 properties:
  *                   code:
  *                     type: string
- *                     example: BAR-001
+ *                     example: B001
  *                   name:
  *                     type: string
- *                     example: Chinese Wall
+ *                     example: Permanent Barrier
  *                   approver_code:
  *                     type: string
- *                     example: EMP001
+ *                     example: E001
  *       400:
  *         description: Missing search parameter.
  *         content:

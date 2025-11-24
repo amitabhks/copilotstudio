@@ -70,13 +70,13 @@ router.get("/", async (req, res) => {
  *                 properties:
  *                   code:
  *                     type: string
- *                     example: EMP001
+ *                     example: E003
  *                   name:
  *                     type: string
- *                     example: Amitabh Kozhiparambil
+ *                     example: John Doe
  *                   email:
  *                     type: string
- *                     example: amit@ubs685.onmicrosoft.com
+ *                     example: johndoe@microsoft.com
  *       400:
  *         description: Missing both email and name query parameters.
  *         content:
