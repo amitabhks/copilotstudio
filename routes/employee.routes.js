@@ -35,66 +35,118 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 /**
  * @openapi
  * /employee/search:
  *   get:
- *     summary: Search employee by email
- *     description: Returns employee details for the given email.
+ *     summary: Search for an employee by email or name
+ *     description: >
+ *       Allows searching employees using either email (exact match) or name (partial match).
+ *       At least one query parameter (`email` or `name`) must be provided.
  *     tags:
  *       - Employee
  *     parameters:
  *       - in: query
  *         name: email
- *         required: true
  *         schema:
  *           type: string
- *         description: Full email of the employee
+ *         required: false
+ *         description: Employee email for exact match search.
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Employee name for case-insensitive partial search.
  *     responses:
  *       200:
- *         description: Employee found
+ *         description: Employee(s) matching the search criteria.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   code:
+ *                     type: string
+ *                     example: EMP001
+ *                   name:
+ *                     type: string
+ *                     example: Amitabh Kozhiparambil
+ *                   email:
+ *                     type: string
+ *                     example: amit@ubs685.onmicrosoft.com
+ *       400:
+ *         description: Missing both email and name query parameters.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 code:
+ *                 error:
  *                   type: string
- *                 name:
- *                   type: string
- *                 email:
- *                   type: string
+ *                   example: You must provide either 'email' or 'name'
  *       404:
- *         description: No employee found
+ *         description: No employee found matching the criteria.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Employee not found
  *       500:
- *         description: Database error
+ *         description: Server error occurred during search.
  */
 router.get("/search", async (req, res) => {
   try {
-    const { email } = req.query;
+    const { email, name } = req.query;
 
-    if (!email) {
-      return res
-        .status(400)
-        .json({ error: "Email query parameter is required" });
+    // Validate
+    if (!email && !name) {
+      return res.status(400).json({
+        error: "You must provide either 'email' or 'name' as a query parameter"
+      });
     }
 
-    const result = await runQuery(
-      "SELECT code, name, email FROM employee WHERE LOWER(email) = LOWER($1)",
-      [email]
-    );
-  
+    let query = "";
+    let params = [];
+
+    // Search by email
+    if (email) {
+      query = `
+        SELECT code, name, email
+        FROM employee
+        WHERE LOWER(TRIM(email)) = LOWER(TRIM($1))
+      `;
+      params = [email];
+    }
+
+    // Search by name (partial match allowed)
+    else if (name) {
+      query = `
+        SELECT code, name, email
+        FROM employee
+        WHERE LOWER(name) LIKE LOWER($1)
+      `;
+      params = [`%${name}%`];
+    }
+
+    const result = await runQuery(query, params);
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Employee not found" });
     }
 
-    res.json(result.rows[0]);
+    res.json(result.rows);
   } catch (err) {
     console.error("Error searching employee:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 /**
  * @openapi

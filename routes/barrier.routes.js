@@ -62,6 +62,96 @@ router.post("/", async (req, res) => {
 
 /**
  * @openapi
+ * /barrier/search:
+ *   get:
+ *     summary: Search barriers by name
+ *     description: >
+ *       Search for barriers using a partial, case-insensitive name match.
+ *       For example, searching with `chi` will match `Chinese Wall` or `China Desk Barrier`.
+ *     tags:
+ *       - Barrier
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Partial or full barrier name to search for.
+ *     responses:
+ *       200:
+ *         description: List of matching barriers.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   code:
+ *                     type: string
+ *                     example: BAR-001
+ *                   name:
+ *                     type: string
+ *                     example: Chinese Wall
+ *                   approver_code:
+ *                     type: string
+ *                     example: EMP001
+ *       400:
+ *         description: Missing search parameter.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Query parameter 'name' is required.
+ *       404:
+ *         description: No matching barriers found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: No barriers found matching the search criteria.
+ *       500:
+ *         description: Unexpected server error.
+ */
+
+router.get("/search", async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.status(400).json({ error: "Query parameter 'name' is required." });
+    }
+
+    const query = `
+      SELECT code, name, approver_code
+      FROM barrier
+      WHERE LOWER(name) LIKE LOWER($1)
+    `;
+
+    const result = await runQuery(query, [`%${name}%`]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "No barriers found matching the search criteria."
+      });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error searching barrier:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+/**
+ * @openapi
  * /barrier/{code}:
  *   get:
  *     summary: Get a barrier by code
